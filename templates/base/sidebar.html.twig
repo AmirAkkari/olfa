@@ -4,12 +4,29 @@
             <div class="sidebar-heading">Menu</div>
             <ul class="sidebar-menu">
                 <li class="sidebar-menu-item">
-                    <a class="sidebar-menu-button" data-toggle="collapse" href="{{ path('app_admin') }}">
-                        <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">dvr</i>
+                    <a class="sidebar-menu-button" href="{{ path('app_admin') }}">
+                        <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">person</i>
                         <span class="sidebar-menu-text">Dashboard</span>
                     </a>
                 </li>
-                   
+                <li class="sidebar-menu-item">
+                    <a class="sidebar-menu-button" href="{{ path('app_type_evenement_index') }}">
+                        <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">create</i>
+                        <span class="sidebar-menu-text">Gestion des types d'évenement</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a class="sidebar-menu-button" href="{{ path('app_sponsor_index') }}">
+                        <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">create</i>
+                        <span class="sidebar-menu-text">Gestion des sponsors</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu-item">
+                    <a class="sidebar-menu-button" href="{{ path('app_evenement_index') }}">
+                        <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">create</i>
+                        <span class="sidebar-menu-text">Gestion des évenements</span>
+                    </a>
+                </li>
             </ul>
 
         </div>
