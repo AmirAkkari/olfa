@@ -13,6 +13,7 @@ class SponsorType extends AbstractType
     {
         $builder
             ->add('nom_societe')
+            ->add('email')
             ->add('type_sponsor')
             ->add('tel')
             ->add('montant')

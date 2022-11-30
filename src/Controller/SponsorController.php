@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Sponsor;
 use App\Form\SponsorType;
+use Symfony\Component\Mime\Email;
 use App\Repository\SponsorRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -23,7 +25,7 @@ class SponsorController extends AbstractController
     }
 
     #[Route('/new', name: 'app_sponsor_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, SponsorRepository $sponsorRepository , ValidatorInterface $validator): Response
+    public function new(Request $request, SponsorRepository $sponsorRepository , ValidatorInterface $validator , MailerInterface $mailer): Response
     {
         $sponsor = new Sponsor();
         $form = $this->createForm(SponsorType::class, $sponsor);
@@ -42,6 +44,16 @@ class SponsorController extends AbstractController
                     'errors' => $errors
                 ]);
             }
+
+            $email = (new Email())
+            ->from('olfa.ayari@esprit.tn')
+            ->to($sponsor->getEmail())
+            ->subject('Merci ')
+            // ->text('Sending emails is fun again!')
+            ->html('<p>Merci '.$sponsor->getNomSociete()." pour votre collaboration </p> <br>
+            <p>Toute l'equipe E-ART</p>");
+
+        $mailer->send($email);
             $sponsorRepository->save($sponsor, true);
             $this->addFlash('success_message', 'Sponsor ajouté avec succés');
             return $this->redirectToRoute('app_sponsor_index', [], Response::HTTP_SEE_OTHER);

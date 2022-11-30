@@ -18,7 +18,7 @@ class TypeEvenement
 
     #[ORM\Column(length: 255)]
     /**
-     * @Assert/NotBlank
+     * @Assert\NotBlank
      */
     private ?string $libelle = null;
 

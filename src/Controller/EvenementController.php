@@ -6,6 +6,7 @@ use App\Entity\Evenement;
 use App\Form\EvenementType;
 use App\Repository\EvenementRepository;
 use App\Repository\TypeEvenementRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,7 +39,7 @@ class EvenementController extends AbstractController
         ]);
     }
 
-    #[Route('/filtre', name: 'app_evenement_filtre', methods: ['GET'])]
+    #[Route('/filtre', name: 'app_evenement_filtre')]
     public function filtre(Request $request, EvenementRepository $evenementRepository, TypeEvenementRepository $typeEvenementRepository, SerializerInterface $serializer): Response
     {
         $type = $typeEvenementRepository->find($request->query->get('id'));
@@ -50,6 +51,29 @@ class EvenementController extends AbstractController
              }
          ]);
 
+        return new JsonResponse($eventsJson);
+    }
+
+    #[Route('/search', name: 'app_evenement_search', methods: ['GET'])]
+    public function search(Request $request, EvenementRepository $evenementRepository, TypeEvenementRepository $typeEvenementRepository, SerializerInterface $serializer , EntityManagerInterface $em): Response
+    {
+        $value = $request->query->get('query');
+        $events = $em
+        ->createQuery(
+            'SELECT e
+            FROM App\Entity\Evenement e
+            WHERE e.titre LIKE :str'
+        )
+        ->setParameter('str', '%'.$value.'%')
+        ->getResult();
+
+        $eventsJson = $serializer->serialize($events, 'json', [
+            'circular_reference_handler' => function ($object) {
+                return $object->getId();
+             }
+         ]);
+
+        //  dd($eventsJson);
         return new JsonResponse($eventsJson);
     }
 
